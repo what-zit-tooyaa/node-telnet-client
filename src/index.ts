@@ -469,7 +469,10 @@ export class Telnet extends EventEmitter {
       this.state = 'getprompt'
 
     if (this.state === 'getprompt') {
-      const stringData = this.decoder.write(chunk)
+      if (!chunk) {
+        console.log("Received null chunk");
+      }
+      const stringData = chunk ? this.decoder.write(chunk) : "";
       const decodedData = this.decode(stringData)
       const promptIndex = search(decodedData, this.opts.shellPrompt)
 
